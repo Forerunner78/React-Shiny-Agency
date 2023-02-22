@@ -2,6 +2,7 @@ import DefaultPicture from '../../assets/profile.png'
 import Card from '../../components/Card/Card'
 import styled from 'styled-components'
 import colors from '../../utils/style/colors'
+import { PageTitle } from '../../utils/style/PageTitle'
 
 const CardsContainer = styled.div`
     display: grid;
@@ -10,13 +11,6 @@ const CardsContainer = styled.div`
     grid-template-columns: repeat(2, 1fr);
     align-items: center;
     justify-items: center;
-`
-
-const PageTitle = styled.h1`
-    font-size: 30px;
-    color: black;
-    text-align: center;
-    padding-bottom: 30px;
 `
 
 const PageSubtitle = styled.h2`
