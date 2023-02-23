@@ -8,10 +8,25 @@ export const ThemeProvider = ({ children }) => {
     const toggleTheme = () => {
         setTheme(theme === 'light' ? 'dark' : 'light')
     }
- 
+
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
-            {children}
+        {children}
         </ThemeContext.Provider>
+    )
+}
+
+export const SurveyContext = createContext()
+
+export const SurveyProvider = ({ children }) => {
+    const [answers, setAnswers] = useState({})
+    const saveAnswers = (newAnswers) => {
+        setAnswers({ ...answers, ...newAnswers })
+    }
+
+    return (
+        <SurveyContext.Provider value={{ answers, saveAnswers }}>
+            {children}
+        </SurveyContext.Provider>
     )
 }
