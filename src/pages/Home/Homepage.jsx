@@ -57,15 +57,15 @@ export default function Homepage() {
 				parent route elements. See the note about <Outlet> below. */}
 		<Routes>
 			<Route path="/" element={<Header />}>
-			<Route index element={<Home />} />
-			<Route path="survey/:questionNumber" element={<Survey />} />
-			<Route path="results" element={<Results />} />
-			<Route path="freelances" element={<Freelances />} />
+				<Route index element={<Home />} />
+				<Route path="survey/:questionNumber" element={<Survey />} />
+				<Route path="results" element={<Results />} />
+				<Route path="freelances" element={<Freelances />} />
 
-			{/* Using path="*"" means "match anything", so this route
-					acts like a catch-all for URLs that we don't have explicit
-					routes for. */}
-			<Route path="*" element={<Error />} />
+				{/* Using path="*"" means "match anything", so this route
+						acts like a catch-all for URLs that we don't have explicit
+						routes for. */}
+				<Route path="*" element={<Error />} />
 			</Route>
 		</Routes>
 		</div>
