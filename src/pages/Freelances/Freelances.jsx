@@ -2,7 +2,7 @@ import DefaultPicture from '../../assets/profile.png'
 import Card from '../../components/Card/Card'
 import styled from 'styled-components'
 import colors from '../../utils/style/colors'
-import { PageTitle } from '../../utils/style/PageTitle'
+import { PageTitle } from '../../utils/style/Atoms'
 
 const CardsContainer = styled.div`
     display: grid;
