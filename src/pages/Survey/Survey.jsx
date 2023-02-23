@@ -2,9 +2,10 @@ import { useParams, Link } from 'react-router-dom'
 import { PageTitle } from '../../utils/style/Atoms'
 import { Loader } from '../../utils/style/Atoms'
 import { useState, useEffect, useContext } from 'react'
+import { SurveyContext } from '../../utils/context/ThemeProvider'
+import { useFetch } from '../../utils/hooks/Hooks'
 import styled from 'styled-components'
 import colors from '../../utils/style/colors'
-import { SurveyContext } from '../../utils/context/ThemeProvider'
 
 const SurveyContainer = styled.div`
 	display: flex;
@@ -59,43 +60,25 @@ function Survey() {
     const currentNumber = parseInt(questionNumber)
     const previousNumber = currentNumber === 1 ? currentNumber : currentNumber - 1
     const nextNumber = currentNumber + 1
-	const [surveyData, setSurveyData] = useState({})
-	const [isDataLoading, setDataLoading] = useState(false)
-	const [error, setError] = useState(false)
 	const { saveAnswers, answers } = useContext(SurveyContext)
+	const { isLoading, data, error} = useFetch(`http://localhost:8000/survey`)
+	const { surveyData } = data
 
 	function saveReply(answer) {
 		saveAnswers({ [questionNumber]: answer })
 	}
 
-	useEffect(() => {
-		async function fetchSurvey() {
-			setDataLoading(true)
-			try {
-				const response = await fetch(`http://localhost:8000/survey`)
-				const { surveyData } = await response.json()
-				setSurveyData(surveyData)
-			} catch (err) {
-				console.log('===== error =====', err)
-				setError(true)
-			} finally {
-				setDataLoading(false)
-		}
+	if (error) {
+	return <span>Oups il y a eu un problème</span>
 	}
-		fetchSurvey()
-	}, [])
-
-if (error) {
-return <span>Oups il y a eu un problème</span>
-}
 
 	return (
 		<SurveyContainer>
 			<PageTitle>Question {questionNumber}</PageTitle>
-			{isDataLoading ? (
+			{isLoading ? (
 				<Loader />
 			) : (
-				<QuestionContent>{surveyData[questionNumber]}</QuestionContent>
+				<QuestionContent>{surveyData && surveyData[questionNumber]}</QuestionContent>
 			)}
 
 			<ReplyWrapper>
