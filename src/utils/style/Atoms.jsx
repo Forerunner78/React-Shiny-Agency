@@ -25,7 +25,7 @@ export const Loader = styled.div`
 
 export const StyledLink = styled(Link)`
     padding: 10px 15px;
-    color: #8186a0;
+    color: ${({ $theme }) => ($theme === 'light' ? '#8186a0' : '#ffffff')};
     text-decoration: none;
     font-size: 18px;
     text-align: center;
@@ -33,12 +33,14 @@ export const StyledLink = styled(Link)`
         props.$isFullLink &&
         `color: white; 
         border-radius: 30px; 
-        background-color: ${colors.primary};`}
+        background-color: ${({ theme }) =>
+            theme === 'light' ? colors.backgroundLight : colors.backgroundDark};
+        color: ${({ theme }) => (theme === 'light' ? '#000000' : '#ffffff')};`}
 `
 
 export const PageTitle = styled.h1`
     font-size: 30px;
-    color: black;
+    color: ${({ theme }) => (theme === 'light' ? '#000000' : '#ffffff')};
     text-align: center;
     padding-bottom: 30px;
 `

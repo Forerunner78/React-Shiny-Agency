@@ -1,9 +1,9 @@
 import { useParams, Link } from 'react-router-dom'
 import { PageTitle } from '../../utils/style/Atoms'
 import { Loader } from '../../utils/style/Atoms'
-import { useState, useEffect, useContext } from 'react'
 import { SurveyContext } from '../../utils/context/ThemeProvider'
-import { useFetch } from '../../utils/hooks/Hooks'
+import { useFetch, useTheme } from '../../utils/hooks/Hooks'
+import { useContext } from 'react'
 import styled from 'styled-components'
 import colors from '../../utils/style/colors'
 
@@ -37,7 +37,9 @@ const ReplyBox = styled.button`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: ${colors.backgroundLight};
+	background-color: ${({ theme }) =>
+		theme === 'light' ? colors.backgroundLight : colors.backgroundDark};
+		color: ${({ theme }) => (theme === 'light' ? '#000000' : '#ffffff')};
 	border-radius: 30px;
 	cursor: pointer;
 	box-shadow: ${(props) =>
@@ -61,8 +63,9 @@ function Survey() {
     const previousNumber = currentNumber === 1 ? currentNumber : currentNumber - 1
     const nextNumber = currentNumber + 1
 	const { saveAnswers, answers } = useContext(SurveyContext)
-	const { isLoading, data, error} = useFetch(`http://localhost:8000/survey`)
-	const { surveyData } = data
+	const { data, isLoading, error } = useFetch(`http://localhost:8000/survey`)
+	const surveyData = data?.surveyData
+	const { theme } = useTheme()
 
 	function saveReply(answer) {
 		saveAnswers({ [questionNumber]: answer })
@@ -74,29 +77,31 @@ function Survey() {
 
 	return (
 		<SurveyContainer>
-			<PageTitle>Question {questionNumber}</PageTitle>
+			<PageTitle theme={theme}>Question {questionNumber}</PageTitle>
 			{isLoading ? (
 				<Loader />
 			) : (
-				<QuestionContent>{surveyData && surveyData[questionNumber]}</QuestionContent>
+				<QuestionContent theme={theme}>{surveyData && surveyData[questionNumber]}</QuestionContent>
 			)}
 
 			<ReplyWrapper>
 			<ReplyBox
 				onClick={() => saveReply(true)}
 				isSelected={answers[questionNumber] === true}
+				theme={theme}
 				>
 					Oui
 				</ReplyBox>
 				<ReplyBox
 				onClick={() => saveReply(false)}
 				isSelected={answers[questionNumber] === false}
+				theme={theme}
 				>
 					Non
 				</ReplyBox>
 			</ReplyWrapper>
 
-			<StyledNav>
+			<StyledNav theme={theme}>
 				<Link to={`/survey/${previousNumber}`}>Question précédente</Link>
 				{currentNumber === 6 ? (
 					<Link to="/results">Résultats</Link>
