@@ -1,42 +1,45 @@
 import { Link } from "react-router-dom";
-import Picture from '../../assets/404.svg';
 import styled from 'styled-components'
 import colors from '../../utils/style/colors'
+import { useTheme } from "../../utils/hooks/Hooks";
+import ErrorIllustration from '../../assets/error-illustration.svg'
 
 const ErrorWrapper = styled.div`
-  margin: 30px;
-  display: flex;
-  flex-direction: column;
-  background-color: ${colors.background};
-  align-items: center;
+	margin: 30px;
+	display: flex;
+	flex-direction: column;
+	background-color: ${({ theme }) =>
+		theme === 'light' ? colors.backgroundLight : colors.backgroundDark};
+	align-items: center;
 `
 
 const ErrorTitle = styled.h1`
-  font-weight: 300;
+	color: ${({ theme }) => (theme === 'light' ? '#000000' : '#ffffff')};
+	font-weight: 300;
 `
 
 const ErrorSubtitle = styled.h2`
-  font-weight: 300;
-  color: ${colors.secondary};
+	font-weight: 300;
+	color: ${({ theme }) => (theme === 'light' ? colors.secondary : '#ffffff')};
 `
 
 const Illustration = styled.img`
-  max-width: 800px;
+	max-width: 800px;
 `
 
 function Error() {
-  return (
-    <ErrorWrapper>
-      <ErrorTitle>Oups ...</ErrorTitle>
-      <Illustration src={Picture} alt="erreur 404" />
-      <ErrorSubtitle>
-        Il semblerait que la page que vous cherchez n’existe pas
-      </ErrorSubtitle>
-      <p>
-        <Link to="/">Retour à l'acceuil</Link>
-      </p>
-    </ErrorWrapper>
-  );
+	const { theme } = useTheme()
+	return (
+		<ErrorWrapper theme={theme}>
+			<ErrorTitle theme={theme}>Oups...</ErrorTitle>
+			<Illustration src={ErrorIllustration} />
+			<ErrorSubtitle theme={theme}>
+				<p>
+					<Link to="/">Retour à l'acceuil</Link>
+				</p>
+			</ErrorSubtitle>
+		</ErrorWrapper>
+	);
 }
 
 export default Error
