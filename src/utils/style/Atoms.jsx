@@ -31,12 +31,13 @@ export const StyledLink = styled(Link)`
     text-align: center;
     ${(props) =>
         props.$isFullLink &&
-        `color: white; 
-        border-radius: 30px; 
-        background-color: ${({ theme }) =>
-            theme === 'light' ? colors.backgroundLight : colors.backgroundDark};
+        `border-radius: 30px; 
+        background-color: ${colors.primary};
         color: ${({ theme }) => (theme === 'light' ? '#000000' : '#ffffff')};`}
 `
+// `color: white; 
+//         border-radius: 30px; 
+//         background-color: ${colors.primary};`
 
 export const PageTitle = styled.h1`
     font-size: 30px;
