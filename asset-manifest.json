@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.js": "//github.com/Forerunner78/React-Shiny-Agency/static/js/main.ee4c5ee4.js",
+    "static/media/error-illustration.svg": "//github.com/Forerunner78/React-Shiny-Agency/static/media/error-illustration.fc9ddee48547c71d5534244cfc2a911c.svg",
+    "static/media/home-illustration.svg": "//github.com/Forerunner78/React-Shiny-Agency/static/media/home-illustration.3c3e6fa7e38c96aae00aea10c3cbf9cd.svg",
+    "static/media/black-logo.svg": "//github.com/Forerunner78/React-Shiny-Agency/static/media/black-logo.7d5a866035d11a07ea5b06f8b49d920d.svg",
+    "static/media/white-logo.svg": "//github.com/Forerunner78/React-Shiny-Agency/static/media/white-logo.bd3f30e459bb7ac81a65f2300c0901f0.svg",
+    "index.html": "//github.com/Forerunner78/React-Shiny-Agency/index.html",
+    "main.ee4c5ee4.js.map": "//github.com/Forerunner78/React-Shiny-Agency/static/js/main.ee4c5ee4.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.ee4c5ee4.js"
+  ]
+}
