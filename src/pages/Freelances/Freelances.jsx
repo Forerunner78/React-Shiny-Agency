@@ -1,7 +1,8 @@
 import Card from '../../components/Card/Card'
 import styled from 'styled-components'
-import { Loader, PageTitle } from '../../utils/style/Atoms'
-import { useFetch, useTheme } from '../../utils/hooks/Hooks'
+import { PageTitle } from '../../utils/style/Atoms'
+import { useTheme } from '../../utils/hooks/Hooks'
+import freelancesData from '../../models/freelances'
 
 const CardsContainer = styled.div`
     display: grid;
@@ -19,25 +20,9 @@ const PageSubtitle = styled.h2`
     text-align: center;
     padding-bottom: 30px;
 `
-const LoaderWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-`
 
 export default function Freelances() {
     const { theme } = useTheme()
-    const { data, isLoading, error } = useFetch(
-		`http://localhost:8000/freelances`
-	)
-
-    // Ici le "?" permet de s'assurer que data existe bien.
-    // Vous pouvez en apprendre davantage sur cette notation ici :
-    // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Operators/Optional_chaining
-    const freelancesList = data?.freelancersList;
-
-    if (error) {
-        return <span>Oups il y a eu un problème</span>
-    }
 
     return (
         <div>
@@ -45,22 +30,16 @@ export default function Freelances() {
             <PageSubtitle theme={theme}>
                 Chez Shiny nous réunissons les meilleurs profils pour vous.
             </PageSubtitle>
-            {isLoading ? (
-				<LoaderWrapper>
-                    <Loader theme={theme}/>
-                </LoaderWrapper>
-			) : (
-				<CardsContainer>
-                    {freelancesList?.map((profile, index) => (
-                        <Card
-                            key={`${profile.name}-${index}`}
-                            label={profile.jobTitle}
-                            picture={profile.picture}
-                            title={profile.name}
-                        />
-                    ))}
-                </CardsContainer>
-			)}
+            <CardsContainer>
+                {freelancesData?.map((profile, index) => (
+                    <Card
+                        key={`${profile.name}-${index}`}
+                        label={profile.job}
+                        picture={profile.picture}
+                        title={profile.name}
+                    />
+                ))}
+            </CardsContainer>
         </div>
     )
 }
