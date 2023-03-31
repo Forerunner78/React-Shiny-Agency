@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 import { PageTitle } from '../../utils/style/Atoms'
 import { SurveyContext } from '../../utils/context/ThemeProvider'
 import { useTheme } from '../../utils/hooks/Hooks'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { answersLinkedJob } from '../../models/results'
 import styled from 'styled-components'
 import colors from '../../utils/style/colors'
@@ -59,6 +59,7 @@ const ReplyWrapper = styled.div`
 `
 
 function Survey() {
+    const [isDisabled, setIsDisabled] = useState(true)
     const { questionNumber } = useParams()
     const currentNumber = parseInt(questionNumber)
     const previousNumber =
@@ -77,18 +78,19 @@ function Survey() {
         const noButton = document.getElementById('button-no')
 
         if (answer === 'yes') {
-            console.log('yes')
             yesButton.classList.add('active')
             yesButton.style.borderColor = `${colors.primary}`
             noButton.classList.remove('active')
+            setIsDisabled(false)
         } else if (answer === 'no') {
-            console.log('yes')
             noButton.classList.add('active')
             noButton.style.borderColor = `${colors.primary}`
             yesButton.classList.remove('active')
+            setIsDisabled(false)
         } else {
             yesButton.classList.remove('active')
             noButton.classList.remove('active')
+            setIsDisabled(true)
         }
     }
 
@@ -130,6 +132,10 @@ function Survey() {
                 </Link>
                 {currentNumber === 6 ? (
                     <Link to="/results">Résultats</Link>
+                ) : isDisabled ? (
+                    <Link to="javascript:void(0)" onClick={() => handleClick()}>
+                        Question suivante
+                    </Link>
                 ) : (
                     <Link
                         to={`/survey/${nextNumber}`}

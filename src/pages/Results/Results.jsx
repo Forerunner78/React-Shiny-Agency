@@ -76,7 +76,6 @@ function Results() {
         }
         return acc
     }, {})
-    console.log(requiredJobsList)
     const keysToKeep = Object.keys(requiredJobsList)
 
     const jobNeeded = Object.keys(jobAnswersData).reduce((acc, key) => {
