@@ -72,6 +72,26 @@ function Survey() {
         saveAnswers({ [answersLinkedJob[questionNumber]]: answer })
     }
 
+    const handleClick = (answer) => {
+        const yesButton = document.getElementById('button-yes')
+        const noButton = document.getElementById('button-no')
+
+        if (answer === 'yes') {
+            console.log('yes')
+            yesButton.classList.add('active')
+            yesButton.style.borderColor = `${colors.primary}`
+            noButton.classList.remove('active')
+        } else if (answer === 'no') {
+            console.log('yes')
+            noButton.classList.add('active')
+            noButton.style.borderColor = `${colors.primary}`
+            yesButton.classList.remove('active')
+        } else {
+            yesButton.classList.remove('active')
+            noButton.classList.remove('active')
+        }
+    }
+
     return (
         <SurveyContainer>
             <PageTitle theme={theme}>Question {questionNumber}</PageTitle>
@@ -81,14 +101,22 @@ function Survey() {
 
             <ReplyWrapper>
                 <ReplyBox
-                    onClick={() => saveReply(true)}
+                    id="button-yes"
+                    onClick={() => {
+                        saveReply(true)
+                        handleClick('yes')
+                    }}
                     isSelected={answers[questionNumber] === true}
                     theme={theme}
                 >
                     Oui
                 </ReplyBox>
                 <ReplyBox
-                    onClick={() => saveReply(false)}
+                    id="button-no"
+                    onClick={() => {
+                        saveReply(false)
+                        handleClick('no')
+                    }}
                     isSelected={answers[questionNumber] === false}
                     theme={theme}
                 >
@@ -103,7 +131,12 @@ function Survey() {
                 {currentNumber === 6 ? (
                     <Link to="/results">Résultats</Link>
                 ) : (
-                    <Link to={`/survey/${nextNumber}`}>Question suivante</Link>
+                    <Link
+                        to={`/survey/${nextNumber}`}
+                        onClick={() => handleClick()}
+                    >
+                        Question suivante
+                    </Link>
                 )}
             </StyledNav>
         </SurveyContainer>

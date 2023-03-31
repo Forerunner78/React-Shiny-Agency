@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 import { useTheme } from '../hooks/Hooks'
+import colors from './colors'
 
 const StyledGlobalStyle = createGlobalStyle`
     * {
@@ -9,6 +10,10 @@ const StyledGlobalStyle = createGlobalStyle`
         background-color: ${(props) =>
             props.isDarkMode ? '#2F2E41' : 'white'};
         margin: 20px;
+    }
+    .active{
+        background-color: ${colors.primary};
+        color: ${colors.backgroundLight};
     }
 `
 
