@@ -21,8 +21,10 @@ const PageSubtitle = styled.h2`
     padding-bottom: 30px;
 `
 
-export default function Freelances() {
+export default function Freelances(props) {
     const { theme } = useTheme()
+    const { jobneeded } = props
+    console.log(jobneeded)
 
     return (
         <div>
