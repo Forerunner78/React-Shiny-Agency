@@ -1,9 +1,10 @@
 import { useContext } from 'react'
 import styled from 'styled-components'
 import colors from '../../utils/style/colors'
-import { useFetch, useTheme } from '../../utils/hooks/Hooks'
-import { StyledLink, Loader } from '../../utils/style/Atoms'
+import { useTheme } from '../../utils/hooks/Hooks'
+import { StyledLink } from '../../utils/style/Atoms'
 import { SurveyContext } from '../../utils/context/ThemeProvider'
+import { jobAnswersData, jobsDefinitionData } from '../../models/results'
 
 const ResultsContainer = styled.div`
     display: flex;
@@ -12,7 +13,7 @@ const ResultsContainer = styled.div`
     margin: 60px 90px;
     padding: 30px;
     background-color: ${({ theme }) =>
-		theme === 'light' ? colors.backgroundLight : colors.backgroundDark};
+        theme === 'light' ? colors.backgroundLight : colors.backgroundDark};
 `
 
 const ResultsTitle = styled.h2`
@@ -22,7 +23,7 @@ const ResultsTitle = styled.h2`
     max-width: 60%;
     text-align: center;
     & > span {
-		padding-left: 10px;
+        padding-left: 10px;
     }
 `
 
@@ -31,35 +32,31 @@ const DescriptionWrapper = styled.div`
 `
 
 const JobTitle = styled.span`
-	color: ${({ theme }) =>
-		theme === 'light' ? colors.primary : colors.backgroundLight};
-	text-transform: capitalize;
+    color: ${({ theme }) =>
+        theme === 'light' ? colors.primary : colors.backgroundLight};
+    text-transform: capitalize;
 `
 
 const JobDescription = styled.div`
-	font-size: 18px;
-	& > p {
-		color: ${({ theme }) => (theme === 'light' ? colors.secondary : '#ffffff')};
-		margin-block-start: 5px;
-	}
-	& > span {
-		font-size: 20px;
-	}
-`
-
-const LoaderWrapper = styled.div`
-	display: flex;
-	justify-content: center;
+    font-size: 18px;
+    & > p {
+        color: ${({ theme }) =>
+            theme === 'light' ? colors.secondary : '#ffffff'};
+        margin-block-start: 5px;
+    }
+    & > span {
+        font-size: 20px;
+    }
 `
 
 export function formatQueryParams(answers) {
-	const answerNumbers = Object.keys(answers)
+    const answerNumbers = Object.keys(answers)
 
-	return answerNumbers.reduce((previousParams, answerNumber, index) => {
-		const isFirstParam = index === 0
-		const separator = isFirstParam ? '' : '&'
-		return `${previousParams}${separator}a${answerNumber}=${answers[answerNumber]}`
-	}, '')
+    return answerNumbers.reduce((previousParams, answerNumber, index) => {
+        const isFirstParam = index === 0
+        const separator = isFirstParam ? '' : '&'
+        return `${previousParams}${separator}a${answerNumber}=${answers[answerNumber]}`
+    }, '')
 }
 
 export function formatJobList(title, listLength, index) {
@@ -69,66 +66,61 @@ export function formatJobList(title, listLength, index) {
     return `${title},`
 }
 
-function formatFetchParams(answers) {
-	const answerNumbers = Object.keys(answers)
-
-	return answerNumbers.reduce((previousParams, answerNumber, index) => {
-		const isFirstParam = index === 0
-		const separator = isFirstParam ? '' : '&'
-		return `${previousParams}${separator}a${answerNumber}=${answers[answerNumber]}`
-	}, '')
-}
-
 function Results() {
-	const { theme } = useTheme()
-	const { answers } = useContext(SurveyContext)
-	const fetchParams = formatFetchParams(answers)
+    const { theme } = useTheme()
+    const { answers } = useContext(SurveyContext)
 
-	const { data, isLoading, error } = useFetch(
-		`http://localhost:8000/results?${fetchParams}`
-	)
+    const requiredJobsList = Object.keys(answers).reduce((acc, key) => {
+        if (answers[key] !== false) {
+            acc[key] = answers[key]
+        }
+        return acc
+    }, {})
+    console.log(requiredJobsList)
+    const keysToKeep = Object.keys(requiredJobsList)
 
-	if (error) {
-		return <span>Il y a un problème</span>
-	}
+    const jobNeeded = Object.keys(jobAnswersData).reduce((acc, key) => {
+        if (
+            jobAnswersData[key].some((value) => keysToKeep.includes(value)) &&
+            !acc.includes(key)
+        ) {
+            acc.push(key)
+        }
+        return acc
+    }, [])
 
-	const resultsData = data?.resultsData
-
-	return isLoading ? (
-		<LoaderWrapper>
-			<Loader />
-		</LoaderWrapper>
-	) : (
-		<ResultsContainer theme={theme}>
-		<ResultsTitle theme={theme}>
-			Les compétences dont vous avez besoin :
-			{resultsData &&
-			resultsData.map((result, index) => (
-				<JobTitle
-				key={`result-title-${index}-${result.title}`}
-				theme={theme}
-				>
-				{formatJobList(result.title, resultsData.length, index)}
-				</JobTitle>
-			))}
-		</ResultsTitle>
-		<StyledLink $isFullLink to="/freelances">
-			Découvrez nos profils
-		</StyledLink>
-		<DescriptionWrapper>
-			{resultsData &&
-			resultsData.map((result, index) => (
-				<JobDescription
-				theme={theme}
-				key={`result-detail-${index}-${result.title}`}
-				>
-				<JobTitle theme={theme}>{result.title}</JobTitle>
-				<p>{result.description}</p>
-				</JobDescription>
-			))}
-		</DescriptionWrapper>
-		</ResultsContainer>
-	)
+    return (
+        <ResultsContainer theme={theme}>
+            <ResultsTitle theme={theme}>
+                Les compétences dont vous avez besoin :
+                {jobNeeded &&
+                    jobNeeded.map((job, index) => (
+                        <JobTitle
+                            key={`result-title-${index}-${job}`}
+                            theme={theme}
+                        >
+                            {formatJobList(job, jobNeeded.length, index)}
+                        </JobTitle>
+                    ))}
+            </ResultsTitle>
+            <StyledLink $isFullLink to="/freelances">
+                Découvrez nos profils
+            </StyledLink>
+            <DescriptionWrapper>
+                {jobNeeded &&
+                    jobNeeded.map((job, index) => (
+                        <JobDescription
+                            theme={theme}
+                            key={`result-detail-${index}-${job}`}
+                        >
+                            <JobTitle theme={theme}>{job}</JobTitle>
+                            <p>{jobsDefinitionData[job]}</p>
+                            <br />
+                        </JobDescription>
+                    ))}
+            </DescriptionWrapper>
+        </ResultsContainer>
+    )
 }
 
 export default Results

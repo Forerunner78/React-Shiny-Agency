@@ -1,5 +1,5 @@
-import { createContext } from "react"
-import { useState, useContext } from "react"
+import { createContext } from 'react'
+import { useState, useContext } from 'react'
 
 export const ThemeContext = createContext()
 
@@ -11,7 +11,7 @@ export const ThemeProvider = ({ children }) => {
 
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
-        {children}
+            {children}
         </ThemeContext.Provider>
     )
 }
@@ -31,7 +31,7 @@ export const SurveyProvider = ({ children }) => {
     )
 }
 
-// useContext est un hook qui permet de se brancher 
+// useContext est un hook qui permet de se brancher
 // depuis un composant enfant qui a été wrappé par un Provider
 // et donc d’accéder simplement au state partagé.
 // Dans ce case, useTheme permet d'accéder

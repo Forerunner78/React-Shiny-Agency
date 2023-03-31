@@ -45,7 +45,7 @@ const CardWrapper = styled.div`
     }
 `
 
-function Card({ label, title, picture }) {
+function Card({ label, picture, title }) {
     const { theme } = useTheme()
     const [isFavorite, setIsFavorite] = useState(false)
     const star = isFavorite ? '⭐️' : ''
@@ -69,7 +69,7 @@ Card.propTypes = {
 Card.defaultProps = {
     label: '',
     title: '',
-    picture: DefaultPicture
+    picture: DefaultPicture,
 }
 
 export default Card
